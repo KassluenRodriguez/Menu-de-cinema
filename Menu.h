@@ -3,59 +3,58 @@
 #include <clocale>
 #include <ctime>
 #include <string>
-#include "Pelicula.h"
+#include "Movie.h"
 #include "Salas.h"
 #include "Horarios.h"
 using namespace std;
 
 class Menu {
 private:
-    Pelicula* pelicula;
-    Salas* salas;
-    Horarios* horarios;
+    Movie* movie;
+    Rooms* rooms;
+    Schedule* schedules;
 
-    int totalpelis, totalbutacas;
-    int consecutivos[100];
-    int totalReservas;
+    int totalMovies, totalSeats;
+    int consecutives[100];
+    int totalReservations;
 public:
     Menu();
     ~Menu();
     void menus();
-    void Archivo();
-    void Mantenimiento();
-    int Reserva();
-    void venta();
+    void File();
+    void Maintenance();
+    int Reservation();
+    void Sale();
 
-    void editarsalas();
-    void editarpeliculas();
-    void editarHorarios();
-    int agregarConsecutivo();
-    
-}; 
+    void editRooms();
+    void editMovies();
+    void editSchedules();
+    int addconsecutives();
 
-Menu::Menu():totalpelis(0),totalbutacas(0),totalReservas(0) {
-    pelicula = new Pelicula[3];
-    salas = new Salas[4];  
-    horarios = new Horarios[3];
+};
+
+Menu::Menu() : totalMovies(0), totalSeats(0), totalReservations(0) {
+    movie = new Movie[3];
+    rooms = new Rooms[4];
+    schedules = new Schedule[3];
     for (int i = 0; i < 100; ++i) {
-        consecutivos[i] = 0;
+        consecutives[i] = 0;
     }
 }
 
 Menu::~Menu() {
-    delete[] pelicula;
-    delete[] salas;
-    delete[] horarios;
+    delete[] movie;
+    delete[] rooms;
+    delete[] schedules;
 }
 
-int Menu::agregarConsecutivo() {
-    static int consecutivo = 1000;
-    return consecutivo++;
+int Menu::addconsecutives() {
+    static int reservationNumber = 1000;
+    return reservationNumber++;
 }
-
 
 void Menu::menus() {
-    int opcion;
+    int option;
     do {
         cout << "------Bienvenido a Cinepolis---------" << endl << endl;
         cout << "1- Ir al archivo" << endl;
@@ -63,291 +62,290 @@ void Menu::menus() {
         cout << "3- Reservar " << endl;
         cout << "4- Venta " << endl;
         cout << "5- Salir" << endl;
-        cin >> opcion;
+        cin >> option;
         cout << endl;
         cout << "-------------------------------------" << endl << endl;
 
-        switch (opcion) {
-        case 1:
-            Archivo();
-            break;
-
-        case 2:
-            Mantenimiento();
-            break;
-
-        case 3:
-            Reserva();
-            break;
-
-        case 4: 
-            venta();
-            break;
-
-        case 5:
+        if (option == 1) {
+            File();
+        }
+        else if (option == 2) {
+            Maintenance();
+        }
+        else if (option == 3) {
+            Reservation();
+        }
+        else if (option == 4) {
+            Sale();
+        }
+        else if (option == 5) {
             cout << "Saliendo del programa..." << endl;
             exit(0);
-
-         default: {
-            cout << "Opción inválida. Intente nuevamente." << endl;
-            break;
-         }
         }
-        
+        else {
+            cout << "Opción inválida. Intente nuevamente." << endl;
+        }
+
     } while (true);
 }
 
 
-void Menu::Archivo() {
-    int opcion;
+void Menu::File() {
+    int option;
     do {
         cout << "Hola, mi nombre es Kassluen Rodriguez Baules," << endl;
         cout << "soy estudiante de la Universidad Nacional," << endl;
         cout << "el cual soy el creador de este proyecto," << endl;
         cout << "con esfuerzo y mucha insistencia a los compañeros y al profe, lo realice" << endl << endl;
         cout << "1-Volver al menu principal" << endl;
-        cin >> opcion;
+        cin >> option;
 
-        if (opcion == 1) {
+        if (option == 1) {
             menus();
             break;
         }
     } while (true);
 }
 
-
-void Menu::Mantenimiento() {
-    int opcion;
+void Menu::Maintenance() {
+    int option;
     do {
         cout << "------------Mantenimiento------------" << endl << endl;
         cout << "1- Editar películas" << endl;
         cout << "2- Editar salas" << endl;
         cout << "3- Editar horarios" << endl;
         cout << "4- Volver al menú principal" << endl;
-        cin >> opcion;
-        switch (opcion)
-        {
-        case 1: 
-            editarpeliculas();
-            break;
-        
-        case 2: 
-            editarsalas();
-            break;
-        
-        case 3: 
-            editarHorarios();
-            break;
-        
-        case 4: 
-            menus();
-            break;
-        
-        default: {
-            cout << "opcion invalida....." << endl;
-            break;
+        cin >> option;
+
+        if (option == 1) {
+            editMovies();
         }
+        else if (option == 2) {
+            editRooms();
+        }
+        else if (option == 3) {
+            editSchedules();
+        }
+        else if (option == 4) {
+            menus();
+        }
+        else {
+            cout << "opcion invalida....." << endl;
         }
     } while (true);
 }
 
-
-void Menu::editarpeliculas() {
-    string nombre, pais;
-    int año, duracion, reseña;
+void Menu::editMovies() {
+    string name, country;
+    int year, duration, review;
 
     cout << "¿Cuántas películas quiere ingresar?: ";
-    cin >> totalpelis;
-    if (totalpelis < 1 || totalpelis > 3) {
+    cin >> totalMovies;
+    if (totalMovies < 1 || totalMovies > 3) {
         cout << "Número inválido de películas. Intente nuevamente." << endl;
         return;
     }
-    for (int i = 0; i < totalpelis; i++) {
+    for (int i = 0; i < totalMovies; i++) {
         cin.ignore();
         cout << "Digite el nombre de la película " << i + 1 << endl;
-        getline(cin, nombre);
-        pelicula[i].setnombre(nombre);
+        getline(cin, name);
+        movie[i].setName(name);
 
         cout << "Digite el año de la película: " << i + 1 << endl;
-        cin >> año;
-        pelicula[i].setaño(año);
+        cin >> year;
+        movie[i].setYear(year);
 
         cout << "Digite la duración de la película: " << i + 1 << endl;
-        cin >> duracion;
-        pelicula[i].setduracion(duracion);
+        cin >> duration;
+        movie[i].setDuration(duration);
         cin.ignore();
         cout << "Digite el país de la película: " << i + 1 << endl;
-        getline(cin, pais);
-        pelicula[i].setpais(pais);
+        getline(cin, country);
+        movie[i].setCountry(country);
 
         cout << "Digite una reseña de la película del 1 al 10: " << endl;
-        cin >> reseña;
-        pelicula[i].setreviews(reseña);
+        cin >> review;
+        movie[i].setReviews(review);
     }
 }
 
-void Menu::editarsalas() {
-    int sala;
-    if (totalpelis == 0) {
-        cout << "no hay peliculas disponibles..., intente nuevamente" << endl;
-    }
-   
-    cout << "Digite el número de sala (1-3): " << endl;
-    cin >> sala;
 
-    if (sala < 0 || sala >= 4) {
+void Menu::editRooms() {
+    int room;
+    if (totalMovies == 0) {
+        cout << "No hay películas disponibles..., intente nuevamente" << endl;
+        return;
+    }
+
+    cout << "Digite el número de sala (1-3): " << endl;
+    cin >> room;
+
+    if (room < 1 || room > 3) {
         cout << "Número de sala inválido. Intente nuevamente." << endl;
         return;
     }
 
-     int filas, columnas;
-     cout << "Digite el número de filas de butacas: ";
-     cin >> filas;
-     cout << "Digite el número de columnas de butacas: ";
-     cin >> columnas;
+    int rows, columns;
+    cout << "Digite el número de filas de butacas: ";
+    cin >> rows;
+    cout << "Digite el número de columnas de butacas: ";
+    cin >> columns;
 
-    salas[sala - 1].setDimension(filas, columnas); 
+    rooms[room - 1].setDimensions(rows, columns);
 
     cout << "Asignar película a esta sala. Películas disponibles:" << endl;
-    for (int i = 0; i < totalpelis; i++) {
-        cout << i + 1 << ". " << pelicula[i].getnombre() << endl;
+    for (int i = 0; i < totalMovies; i++) {
+        cout << i + 1 << ". " << movie[i].getName() << endl;
     }
-    int peliculaAsignada;
-    cin >> peliculaAsignada;
-    peliculaAsignada--; 
-    salas[sala-1].setnumero(peliculaAsignada);
+    int assignedMovie;
+    cin >> assignedMovie;
+    assignedMovie--;
+    rooms[room - 1].setNumber(assignedMovie);
 }
 
-void Menu::editarHorarios() {
-    int opcion;
+void Menu::editSchedules() {
+    int option;
     do {
         cout << "1- Ingresar fecha" << endl;
         cout << "2- Ingresar hora inicial y final" << endl;
         cout << "3- Volver al menú principal" << endl;
-        cin >> opcion;
-        switch (opcion) {
-        case 1: {
-            if (totalpelis > 0) {
-                int dia, mes, año;
-                for (int i = 0; i < totalpelis; i++) {
-                    cout << "Ingrese la fecha del estreno de la película en formato DD/MM/AAAA para " << pelicula[i].getnombre() << ": ";
-                    cin >> dia >> mes >> año;
-                    horarios[i].setfecha(dia, mes, año);
-                    cout << "Fecha guardada: " << horarios[i].getfecha() << endl;
+        cin >> option;
+
+        if (option == 1) {
+            if (totalMovies > 0) {
+                int day, month, year;
+                for (int i = 0; i < totalMovies; i++) {
+                    cout << "Ingrese la fecha del estreno de " << movie[i].getName() << " en formato DD/MM/AAAA: ";
+                    cin >> day >> month >> year;
+                    schedules[i].setDate(day, month, year);
+                    cout << "Fecha guardada: " << schedules[i].getDate() << endl;
                 }
             }
             else {
                 cout << "No se han ingresado películas." << endl;
             }
-            break;
-         }
-         case 2: 
-            int horaInicial, horafinal;
-            for (int i = 0; i < totalpelis; i++) {
-                cout << "Digite la hora inicial de la película " << pelicula[i].getnombre() << endl;
-                cin >> horaInicial;
-                horarios[i].sethoraIni(horaInicial);
-                horafinal = horaInicial + pelicula[i].getduracion();
-                horarios[i].sethorafinal(horafinal);
-                cout << "La pelicula iniciara a las " << horarios[i].gethoraIni() << " y terminara a las " << horarios[i].gethorafinal() << endl;
-            }
-
-            break;
-        
-          case 3: 
-            menus();
-            break;
-        
         }
-
-
+        else if (option == 2) {
+            int startHour, endHour;
+            for (int i = 0; i < totalMovies; i++) {
+                cout << "Digite la hora inicial de la película " << movie[i].getName() << endl;
+                cin >> startHour;
+                schedules[i].setStartHour(startHour);
+                endHour = startHour + movie[i].getDuration();
+                schedules[i].setEndHour(endHour);
+                cout << "La película iniciará a las " << schedules[i].getStartHour() << " y terminará a las " << schedules[i].getEndHour() << endl;
+            }
+        }
+        else if (option == 3) {
+            menus();
+        }
+        else {
+            cout << "Opción inválida....." << endl;
+        }
     } while (true);
 }
 
-int Menu::Reserva() {
-    if (totalpelis == 0) {
-        cout << "Ingrese una pelicula..." << endl;
+int Menu::Reservation() {
+    if (totalMovies == 0) {
+        cout << "Ingrese una película..." << endl;
         return -1;
     }
 
     cout << "¿Qué película quiere reservar? " << endl;
-    for (int i = 0; i < totalpelis; ++i)
-        cout << i + 1 << " - " << pelicula[i].getnombre() << endl;
+    for (int i = 0; i < totalMovies; ++i)
+        cout << i + 1 << " - " << movie[i].getName() << endl;
 
-    int seleccion;
-    cin >> seleccion;
+    int selection;
+    cin >> selection;
 
-    int peliculaSeleccionada = seleccion - 1;
-    Salas& sala = salas[peliculaSeleccionada];
+    int selectedMovie = selection - 1;
+    Rooms& room = rooms[selectedMovie];
 
-    cout << "Ha seleccionado la película: " << pelicula[peliculaSeleccionada].getnombre() << endl;
-    cout << "En la sala: " << sala.getnumero() << endl;
-    cout << "Fecha: " << horarios[peliculaSeleccionada].getfecha() << endl;
-    cout << "Hora: " << horarios[peliculaSeleccionada].gethoraIni() << " a " << horarios[peliculaSeleccionada].gethorafinal() << endl;
+    cout << "Ha seleccionado la película: " << movie[selectedMovie].getName() << endl;
+    cout << "En la sala: " << room.getNumber() << endl;
+    cout << "Fecha: " << schedules[selectedMovie].getDate() << endl;
+    cout << "Hora: " << schedules[selectedMovie].getStartHour() << " a " << schedules[selectedMovie].getEndHour() << endl;
 
-    cout << "Distribución de butacas:" << endl;
-    for (int fila = 0; fila < sala.getFilas(); ++fila) {
-        for (int col = 0; col < sala.getColumnas(); ++col)
-            cout << (sala.esOcupada(fila, col) ? "O  " : char('A' + fila) + to_string(col + 1) + " ");
+    cout << "Distribución de butacas: /ocupadas = O/" << endl;
+    cout << "  ";
+    for (int col = 1; col <= room.getColumns(); ++col) {
+        if (col < 10) { cout << "  " << col << " "; }
+        else { cout << " " << col << " "; }
+    }
+    cout << endl;
+
+    for (int row = 0; row < room.getRows(); ++row) {
+        cout << char('A' + row) << "|";
+        for (int col = 0; col < room.getColumns(); ++col) {
+            if (room.isOccupied(row, col)) {
+                cout << " O  ";
+            }
+            else {
+                if (col < 9) {
+                    cout << " " << char('A' + row) << (col + 1) << " ";
+                }
+                else {
+                    cout << char('A' + row) << (col + 1) << " ";
+                }
+            }
+        }
         cout << endl;
     }
 
     cout << "¿Cuántos asientos desea reservar?" << endl;
-    int cantidadAsientos;
-    cin >> cantidadAsientos;
+    int numSeats;
+    cin >> numSeats;
 
-    float totalPrecio = 0;
-    for (int i = 0; i < cantidadAsientos; ++i) {
-        char filaChar;
+    float totalPrice = 0;
+    for (int i = 0; i < numSeats; ++i) {
+        char rowChar;
         int col;
         cout << "Ingrese fila y columna (ejemplo A1): ";
-        cin >> filaChar >> col;
-        int fila = filaChar - 'A';
+        cin >> rowChar >> col;
+        int row = rowChar - 'A';
 
-        if (sala.esOcupada(fila, col - 1))
+        if (room.isOccupied(row, col - 1))
             cout << "Butaca ocupada." << endl;
         else {
-            sala.marcarOcupada(fila, col - 1);
-            totalPrecio += sala.getprecio();
-            cout << "Reservado butaca " << filaChar << col << endl;
+            room.markOccupied(row, col - 1);
+            totalPrice += room.getPrice();
+            cout << "Reservado butaca " << rowChar << col << endl;
         }
     }
-     
-    sala.agregarReserva(totalPrecio);
-    int consecutivo = agregarConsecutivo();
-    consecutivos[totalReservas] = consecutivo;
-    totalReservas++;
 
-    cout << "Su numero de reserva es: " << consecutivo << endl << endl;
-    return consecutivo;
+    room.addReservation(totalPrice);
+    int consecutive = addconsecutives();
+    consecutives[totalReservations] = consecutive;
+    totalReservations++;
+
+    cout << "Su número de reserva es: " << consecutive << endl << endl;
+    return consecutive;
 }
 
-
-void  Menu::venta() {
-    int consecutivo;
+void Menu::Sale() {
+    int consecutive;
 
     cout << "Ingrese el número de reserva para proceder con la venta: ";
-    cin>> consecutivo;
+    cin >> consecutive;
 
-    bool encontrado = false;
-    for (int i = 0; i < totalReservas; i++) {
-        if (consecutivos[i] == consecutivo) {
-            encontrado = true;
+    bool found = false;
+    for (int i = 0; i < totalReservations; i++) {
+        if (consecutives[i] == consecutive) {
+            found = true;
 
-            cout << "El precio total de su reserva es " << salas[i].getprecio() << "colones" << endl;
-            string cedula, tarjeta;
-            cout << " ingrese su cedula: ";
-            cin >> cedula;
-            cout << "ingrese su tarjeta: ";
-            cin >> tarjeta;
+            cout << "El precio total de su reserva es " << rooms[i].getPrice() << " mil " << endl;
+            string id, card;
+            cout << "Ingrese su cédula: ";
+            cin >> id;
+            cout << "Ingrese su tarjeta: ";
+            cin >> card;
 
-            cout << "Pago exitoso. Gracias por su compa!" << endl;
-            consecutivos[i] = -1;
+            cout << "Pago exitoso. ¡Gracias por su compra!" << endl;
+            consecutives[i] = -1;
             break;
         }
     }
-    if (!encontrado) {
-        cout << "El consecutivo ingresado no es valido." << endl;
+    if (!found) {
+        cout << "El número de reserva ingresado no es válido." << endl;
     }
-
 }

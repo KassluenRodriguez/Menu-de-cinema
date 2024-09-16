@@ -2,86 +2,87 @@
 #include <iostream>
 using namespace std;
 
-class Salas {
+class Rooms {
 private:
-    float precio = 40.0000;
-    float totalPrecioReservas = 0;
-    int numero;
-    int** cantidad;
-    bool** ocupadas;
-    int filas, columnas;
-    int peliculaAsignada;
+    float price = 9;
+    float totalReservationPrice = 0;
+    int number;
+    int** seats;
+    bool** occupied;
+    int rows, columns;
+    int assignedMovie;
 
-    void liberarMemoria();  
+    void freeMemory();
 
 public:
-    Salas(float _precio = 4.0, int _numero = 0, int filas = 100, int columnas = 100);
-    ~Salas();
+    Rooms(float _price = 4.0, int _number = 0, int rows = 100, int columns = 100, int assignedMovie = 0);
 
-    void setprecio(float _precio) { precio = _precio; }
-    float getprecio() const { return precio; }
+    ~Rooms();
 
-    void agregarReserva(float monto) { totalPrecioReservas += monto; }
-    float getTotalReservas() const { return totalPrecioReservas; }
+    void setPrice(float _price) { price = _price; }
+    float getPrice() const { return price; }
 
-    void setnumero(int _numero) { numero = _numero; }
-    int getnumero() const { return numero; }
+    void addReservation(float amount) { totalReservationPrice += amount; }
+    float getTotalReservations() const { return totalReservationPrice; }
 
-    void setcantidad(int fila, int columna, int valor) { cantidad[fila][columna] = valor; }
-    int getcantidad(int fila, int columna) const { return cantidad[fila][columna]; }
+    void setNumber(int _number) { number = _number; }
+    int getNumber() const { return number; }
 
-    void setDimension(int filas, int columnas);
-    int getFilas() const { return filas; }
-    int getColumnas() const { return columnas; }
+    void setSeats(int row, int column, int value) { seats[row][column] = value; }
+    int getSeats(int row, int column) const { return seats[row][column]; }
 
-    void setPeliculaAsignada(int indicePelicula) {
-        peliculaAsignada = indicePelicula;
+    void setDimensions(int rows, int columns);
+    int getRows() const { return rows; }
+    int getColumns() const { return columns; }
+
+    void setAssignedMovie(int movieIndex) {
+        assignedMovie = movieIndex;
     }
-    int getPeliculaAsignada() const {
-        return peliculaAsignada;
+    int getAssignedMovie() const {
+        return assignedMovie;
     }
 
-    void marcarOcupada(int i, int j) { ocupadas[i][j] = true; }
-    void desmarcarOcupada(int i, int j) { ocupadas[i][j] = false; }
-    bool esOcupada(int i, int j) const { return ocupadas[i][j]; }
+    void markOccupied(int i, int j) { occupied[i][j] = true; }
+    void unmarkOccupied(int i, int j) { occupied[i][j] = false; }
+    bool isOccupied(int i, int j) const { return occupied[i][j]; }
 };
 
-Salas::Salas(float _precio, int _numero, int filas, int columnas) 
-    : precio(_precio), numero(_numero), filas(filas), columnas(columnas) {
+Rooms::Rooms(float _price, int _number, int rows, int columns, int assignedMovie)
+    : price(_price), number(_number), rows(rows), columns(columns), assignedMovie(assignedMovie) {
     srand(time(0));
-    cantidad = new int*[filas];
-    ocupadas = new bool*[filas];
-    for (int i = 0; i < filas; ++i) {
-        cantidad[i] = new int[columnas]{};
-        ocupadas[i] = new bool[columnas];
-        for (int j = 0; j < columnas; ++j)
-            ocupadas[i][j] = (rand() % 2 == 0);
+    seats = new int* [rows];
+    occupied = new bool* [rows];
+    for (int i = 0; i < rows; ++i) {
+        seats[i] = new int[columns] {};
+        occupied[i] = new bool[columns];
+        for (int j = 0; j < columns; ++j)
+            occupied[i][j] = (rand() % 2 == 0);
     }
 }
 
-Salas::~Salas() {
-    liberarMemoria();
+Rooms::~Rooms() {
+    freeMemory();
 }
 
-void Salas::liberarMemoria() {
-    for (int i = 0; i < filas; ++i) {
-        delete[] cantidad[i];
-        delete[] ocupadas[i];
+void Rooms::freeMemory() {
+    for (int i = 0; i < rows; ++i) {
+        delete[] seats[i];
+        delete[] occupied[i];
     }
-    delete[] cantidad;
-    delete[] ocupadas;
+    delete[] seats;
+    delete[] occupied;
 }
 
-void Salas::setDimension(int filas, int columnas) {
-    liberarMemoria();
-    this->filas = filas;
-    this->columnas = columnas;
-    cantidad = new int*[filas];
-    ocupadas = new bool*[filas];
-    for (int i = 0; i < filas; ++i) {
-        cantidad[i] = new int[columnas]{};
-        ocupadas[i] = new bool[columnas];
-        for (int j = 0; j < columnas; ++j)
-            ocupadas[i][j] = (rand() % 2 == 0);
+void Rooms::setDimensions(int rows, int columns) {
+    freeMemory();
+    this->rows = rows;
+    this->columns = columns;
+    seats = new int* [rows];
+    occupied = new bool* [rows];
+    for (int i = 0; i < rows; ++i) {
+        seats[i] = new int[columns] {};
+        occupied[i] = new bool[columns];
+        for (int j = 0; j < columns; ++j)
+            occupied[i][j] = (rand() % 2 == 0);
     }
 }

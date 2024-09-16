@@ -132,7 +132,7 @@
   <ItemGroup>
     <ClInclude Include="Horarios.h" />
     <ClInclude Include="Menu.h" />
-    <ClInclude Include="Pelicula.h" />
+    <ClInclude Include="Movie.h" />
     <ClInclude Include="Salas.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

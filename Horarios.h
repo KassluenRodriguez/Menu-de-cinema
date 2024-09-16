@@ -3,54 +3,54 @@
 #include <string>
 using namespace std;
 
-class Horarios {
+class Schedule {
 private:
-    int dia;
-    int mes;
-    int año;
-    int horaIni;
-    int horafinal;
+    int day;
+    int month;
+    int year;
+    int startHour;
+    int endHour;
 public:
-    Horarios(int dia = 0, int mes = 0, int año = 0, int horaIni = 0, int horafinal = 0);
-    ~Horarios();
+    Schedule(int day = 0, int month = 0, int year = 0, int startHour = 0, int endHour = 0);
+    ~Schedule();
 
-    void setfecha(int _dia, int _mes, int _año);
-    string getfecha() const;
+    void setDate(int _day, int _month, int _year);
+    string getDate() const;
 
-    void sethoraIni(int _horaIni);
-    int gethoraIni() const;
+    void setStartHour(int _startHour);
+    int getStartHour() const;
 
-    void sethorafinal(int _horafinal);
-    int gethorafinal() const;
+    void setEndHour(int _endHour);
+    int getEndHour() const;
 };
 
-Horarios::Horarios(int _dia, int _mes, int _año, int _horaIni, int _horafinal)
-    : dia(_dia), mes(_mes), año(_año), horaIni(_horaIni), horafinal(_horafinal) {}
+Schedule::Schedule(int _day, int _month, int _year, int _startHour, int _endHour)
+    : day(_day), month(_month), year(_year), startHour(_startHour), endHour(_endHour) {}
 
-Horarios::~Horarios() {}
+Schedule::~Schedule() {}
 
-void Horarios::setfecha(int _dia, int _mes, int _año) {
-    dia = _dia;
-    mes = _mes;
-    año = _año;
+void Schedule::setDate(int _day, int _month, int _year) {
+    day = _day;
+    month = _month;
+    year = _year;
 }
 
-string Horarios::getfecha() const {
-    return to_string(dia) + "/" + to_string(mes) + "/" + to_string(año);
+string Schedule::getDate() const {
+    return to_string(day) + "/" + to_string(month) + "/" + to_string(year);
 }
 
-void Horarios::sethoraIni(int _horaIni) {
-    horaIni = _horaIni;
+void Schedule::setStartHour(int _startHour) {
+    startHour = _startHour;
 }
 
-int Horarios::gethoraIni() const {
-    return horaIni;
+int Schedule::getStartHour() const {
+    return startHour;
 }
 
-void Horarios::sethorafinal(int _horafinal) {
-    horafinal = _horafinal;
+void Schedule::setEndHour(int _endHour) {
+    endHour = _endHour;
 }
 
-int Horarios::gethorafinal() const {
-    return horafinal;
+int Schedule::getEndHour() const {
+    return endHour;
 }
